@@ -10,16 +10,16 @@ let texts = {
     carry their own weight are abandoned in the nearby forest, left to die.</i><br /><br />
     You take a quick glance at your surroundings. Looming ahead of you is the dreaded <b><u>forest</u></b>. 
     On the table next to you is some bread.`,
-    '2': `<i>Well, this will probably be your last meal anyway. Can't hurt to take some bread. You stuff the bread into your pocket.</i> 
+    '2': `<i>Well, this will probably be your last meal anyway. Can't hurt to take some bread. You stuff the bread into your pocket.</i> <br /><br />
 Now what? Looming ahead of you is the dreaded <b><u>forest</u></b>.`,
-    '3': `<i>The forest is quite dark. You could barely see five feet ahead of you. Surprisingly, walking through the forest felt peaceful.</i>
+    '3': `<i>The forest is quite dark. You could barely see five feet ahead of you. Surprisingly, walking through the forest felt peaceful.</i><br /><br />
 You have not walked far from your village yet. Continuing <b><u>walking</u></b> seems to be the only option here?`,
     '4': `<i>How genius! You crumble the bread that you brought along with you and create a trail behind you. This reminds you of that one story
-your parents read to you when you were a child.</i> <b><u>Walking</u></b> further into the forest seems less of a threat now.`,
-    '5': `<i>You reach into your pocket for bread. But wait, did you even remember to bring bread with you? It seems like you forgot!</i> 
+your parents read to you when you were a child.</i><br /><br /> <b><u>Walking</u></b> further into the forest seems less of a threat now.`,
+    '5': `<i>You reach into your pocket for bread. But wait, did you even remember to bring bread with you? It seems like you forgot!</i> <br /><br />
 Continuing <b><u>walking</u></b> seems to be the only option.`,
     '6': `<i>The sun is almost setting. You've been walking for quite a while now. Looking into the sky, you see crows circling above you.
-You've been taught that it's never a good idea to wander in the woods during the night.</i>`
+You've been taught that it's never a good idea to wander in the woods during the night.</i><br /><br />Perhaps it is time to create a <b><u>campfire</u></b>`
 }
 
 $(function() {
@@ -35,8 +35,10 @@ function doChat() {
         } else if (chatContent.includes('bread') && inventory[0] === 0) {
             inventory[0] = 1;
             chatMessage(texts['2']);
+        } else if (chatContent.includes('turn back')) {
+            cutscene1();
         } else {
-            chatMessage(texts['error']);
+            makeLogicalError();
         }
     } else if (progress === 1) {
         if (chatContent.includes('bread') && inventory[0] === 1) {
@@ -48,19 +50,79 @@ function doChat() {
             chatMessage(texts['6']);
             progress++;
         } else {
-            chatMessage(texts['error'])
+            makeLogicalError();
         }
     } else {
-        chatMessage(texts['error'])
+        makeLogicalError();
     }
     document.getElementById('chatSequence').value = "";
 }
 
 function chatMessage(arg) {
     $($.parseHTML('<li class="list-group-item" style="border-radius:0 !important; border:none !important;"> <span>' + arg + '</span></li>')).hide().appendTo("#story").fadeIn(1000);
+    document.getElementById('chatSequence').classList.remove('is-invalid');
+    document.getElementById('chatSequence').placeholder = 'What do you want to do?';
     tStories++;
     if (tStories > 1) {
         $('#story li:first').remove();
         tStories--;
     }
+}
+
+function makeLogicalError() {
+    document.getElementById('chatSequence').classList.add('is-invalid');
+    document.getElementById('chatSequence').placeholder = texts['error'];
+}
+
+function cutscene1() {
+    $('#main').fadeTo(500, 0, function() {
+        document.getElementById('main').style.display = "none";
+        $('#cutscenes').fadeTo(500, 1, function() {
+            document.getElementById('cutscenes').style.display = "";
+            setTimeout(function() {
+                $('#cutsceneText').fadeTo(500, 1, function() {
+                    $($.parseHTML('<span class="font-italic" style="font-size: 1.5em">"No, today is not the end," you think to yourself as anger flows through you.</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                });
+                setTimeout(function() {
+                    $('#cutsceneText').fadeTo(500, 0, function() {
+                        document.getElementById('cutsceneText').innerHTML = "";
+                    });
+                    setTimeout(function() {
+                        $('#cutsceneText').fadeTo(500, 1, function() {
+                            $($.parseHTML('<span class="font-italic" style="font-size: 1.5em">Evil traditions need to be broken with change.</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                        });
+                        setTimeout(function() {
+                            $('#cutsceneText').fadeTo(500, 0, function() {
+                                document.getElementById('cutsceneText').innerHTML = "";
+                            });
+                            setTimeout(function() {
+                                $('#cutsceneText').fadeTo(500, 1, function() {
+                                    $($.parseHTML('<span class="font-italic" style="font-size: 1.5em">Today is the day you will change the fate of your lineage.</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                                });
+                                setTimeout(function() {
+                                    $('#cutsceneText').fadeTo(500, 0, function() {
+                                        document.getElementById('cutsceneText').innerHTML = "";
+                                    });
+                                    setTimeout(function() {
+                                        $('#cutsceneText').fadeTo(500, 1, function() {
+                                            $($.parseHTML('<span class="font-weight-bold" style="font-size: 2em">The End</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                                        });
+                                        setTimeout(function() {
+                                            $('#cutsceneText').fadeTo(1000, 0, function() {
+                                                document.getElementById('cutsceneText').innerHTML = "";
+                                                document.getElementById('cutscenes').style.display = "none";
+                                                $('#main').fadeTo(3000, 1, function() {
+                                                    document.getElementById('main').style.display = "";
+                                                });
+                                            });
+                                        }, 75000);
+                                    }, 1000);
+                                }, 7500);
+                            }, 1000);
+                        }, 7500);
+                    }, 1000);
+                }, 7500);
+            }, 1000);
+        });
+    });
 }
