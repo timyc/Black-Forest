@@ -31,7 +31,10 @@ Now that you have made a fire, the forest seems less menacing.</i><br /><br /> I
  Snapping awake, you try to run. But it was too late. Pain shoots through your body as you are impaled by the spear of one of the cannibals. The last thing you see before drifting off into oblivion is the blood encrusted smile of a hideous humanoid.</i>
 <br /><br /><b>Game Over</b>. To play again, refresh the page.`,
     '8': `<i>You dig a medium sized hole in the ground and cover it with leaves. Then, you interlock sticks to create a shield like structure. With all of that done, you lie down in the hole and place the stick structure over you.
- It didn't seem long before you were awaken by the rays of the morning son. You sit up and stretch a little.</i><br /><br /> `
+ It didn't seem long before you were awaken by the rays of the morning son. You sit up and stretch a little.</i><br /><br /> It seems like it's time to <b><u>walk</u></b> again.`,
+    '9': `<i>You walk and walk and walk. The forest seems endless. Some paths were blocked by large fallen tree logs. Everywhere looked the same. At some point you were sure that you saw a humongous gingerbread house sitting in the middle of the woods. 
+You think to yourself that you must be hallucinating. After all, why would there be a large gingerbread house? Soon, you see that the path ahead of you was no longer part of the forest. Wait, what's this? It's the village you came from.
+ Resentment crossed your mind. The tradition of your kinsmen is evil. No one should have to go through what you went through.</i> <br /><br /> It's time to <b><u>confront</u></b> those that wronged you.`
 }
 
 $(function() {
@@ -86,6 +89,19 @@ function doChat() {
             disablePlay();
         } else if (chatContent.includes('back') && special[0] === 1) {
             cutscene3();
+        } else {
+            makeLogicalError();
+        }
+    } else if (progress === 4) {
+        if (chatContent.includes('walk')) {
+            chatMessage(texts['9']);
+            progress++;
+        } else {
+            makeLogicalError();
+        }
+    } else if (progress === 5) {
+        if (chatContent.includes('confront')) {
+            cutscene4();
         } else {
             makeLogicalError();
         }
@@ -274,6 +290,69 @@ function cutscene3() {
                                                 });
                                             });
                                         }, 75000);
+                                    }, 1000);
+                                }, 7500);
+                            }, 1000);
+                        }, 7500);
+                    }, 1000);
+                }, 7500);
+            }, 1000);
+        });
+    });
+}
+
+function cutscene4() {
+    $('#main').fadeTo(500, 0, function() {
+        document.getElementById('main').style.display = "none";
+        $('#cutscenes').fadeTo(500, 1, function() {
+            document.getElementById('cutscenes').style.display = "";
+            setTimeout(function() {
+                $('#cutsceneText').fadeTo(500, 1, function() {
+                    $($.parseHTML('<span class="font-italic" style="font-size: 1.5em">"I will be the last to endure this," you think to yourself.</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                });
+                setTimeout(function() {
+                    $('#cutsceneText').fadeTo(500, 0, function() {
+                        document.getElementById('cutsceneText').innerHTML = "";
+                    });
+                    setTimeout(function() {
+                        $('#cutsceneText').fadeTo(500, 1, function() {
+                            $($.parseHTML('<span class="font-italic" style="font-size: 1.5em">"No one else will have to die again."</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                        });
+                        setTimeout(function() {
+                            $('#cutsceneText').fadeTo(500, 0, function() {
+                                document.getElementById('cutsceneText').innerHTML = "";
+                            });
+                            setTimeout(function() {
+                                $('#cutsceneText').fadeTo(500, 1, function() {
+                                    $($.parseHTML('<span class="font-italic" style="font-size: 1.5em">"I will bring change to this broken society."</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                                });
+                                setTimeout(function() {
+                                    $('#cutsceneText').fadeTo(500, 0, function() {
+                                        document.getElementById('cutsceneText').innerHTML = "";
+                                    });
+                                    setTimeout(function() {
+                                        $('#cutsceneText').fadeTo(500, 1, function() {
+                                            $($.parseHTML('<span class="font-italic" style="font-size: 1.5em">With a curled fist, you go on to meet your destiny.</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                                        });
+                                        setTimeout(function() {
+                                            $('#cutsceneText').fadeTo(500, 0, function() {
+                                                document.getElementById('cutsceneText').innerHTML = "";
+                                            });
+                                            setTimeout(function() {
+                                                $('#cutsceneText').fadeTo(500, 1, function() {
+                                                    $($.parseHTML('<span class="font-weight-bold" style="font-size: 2em">The End</span>')).hide().prependTo("#cutsceneText").fadeIn(1000);
+                                                });
+                                                setTimeout(function() {
+                                                    $('#cutsceneText').fadeTo(1000, 0, function() {
+                                                        document.getElementById('cutsceneText').innerHTML = "";
+                                                        document.getElementById('cutscenes').style.display = "none";
+                                                        $('#main').fadeTo(3000, 1, function() {
+                                                            document.getElementById('main').style.display = "";
+                                                        });
+                                                    });
+                                                }, 75000);
+                                            }, 1000);
+                                        }, 7500);
                                     }, 1000);
                                 }, 7500);
                             }, 1000);
