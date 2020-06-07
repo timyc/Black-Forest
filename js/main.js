@@ -74,6 +74,7 @@ function doChat() {
             progress++;
         } else if (chatContent.includes('explor')) {
             chatMessage(texts['gameOver1']);
+            document.getElementById('mainbody').classList.add('colorbg');
             disablePlay();
         } else if (chatContent.includes('back') && special[0] === 1) {
             cutscene2();
@@ -86,6 +87,7 @@ function doChat() {
             progress++;
         } else if (chatContent.includes('sleep')) {
             chatMessage(texts['gameOver2']);
+            document.getElementById('mainbody').classList.add('colorbg');
             disablePlay();
         } else if (chatContent.includes('back') && special[0] === 1) {
             cutscene3();
@@ -131,6 +133,8 @@ function disablePlay() {
     document.getElementById('playButton').disabled = true;
     document.getElementById('chatSequence').disabled = true;
 }
+
+
 
 function cutscene1() {
     $('#main').fadeTo(500, 0, function() {
